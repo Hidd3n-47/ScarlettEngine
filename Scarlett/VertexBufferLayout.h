@@ -47,14 +47,14 @@ public:
 	void Push<uint32>(unsigned int count, ubyte normalize)
 	{
 		m_elements.push_back({ GL_FLOAT, count, normalize });
-		m_stride += count * VertexBufferElement::GetSizeOfType(GL_FLOAT);
+		m_stride += count * VertexBufferElement::GetSizeOfType(GL_INT);
 	}
 
 	template<>
 	void Push<ubyte>(unsigned int count, ubyte normalize)
 	{
 		m_elements.push_back({ GL_UNSIGNED_BYTE, count, normalize });
-		m_stride += count * VertexBufferElement::GetSizeOfType(GL_FLOAT);
+		m_stride += count * VertexBufferElement::GetSizeOfType(GL_UNSIGNED_BYTE);
 	}
 
 	inline unsigned int GetStride() const { return m_stride; }

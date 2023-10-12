@@ -4,11 +4,16 @@
 
 NamespaceScarlettBegin
 
-VertexBuffer::VertexBuffer(const void* data, unsigned int size)
+VertexBuffer::VertexBuffer()
 {
 	glCall(glGenBuffers(1, &m_rendererId));
 	glCall(glBindBuffer(GL_ARRAY_BUFFER, m_rendererId));
-	glCall(glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW));
+}
+
+VertexBuffer::VertexBuffer(const void* data, unsigned int size)
+{
+	VertexBuffer();
+	glCall(glBufferData(GL_ARRAY_BUFFER, size, data, GL_DYNAMIC_DRAW));
 }
 
 VertexBuffer::~VertexBuffer()
@@ -19,6 +24,13 @@ VertexBuffer::~VertexBuffer()
 void VertexBuffer::Bind() const
 {
 	glCall(glBindBuffer(GL_ARRAY_BUFFER, m_rendererId));
+}
+
+void VertexBuffer::BufferData(const void* data, uint32 size)
+{
+	Bind();
+	glCall(glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_DYNAMIC_DRAW));
+	glCall(glBufferSubData(GL_ARRAY_BUFFER, 0, size, data));
 }
 
 void VertexBuffer::Unbind() const

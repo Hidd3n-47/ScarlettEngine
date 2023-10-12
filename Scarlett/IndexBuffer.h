@@ -1,18 +1,21 @@
 #pragma once
+#include "src/CommonHeaders.h"
 
 class IndexBuffer
 {
 public:
-	IndexBuffer(const unsigned int* data, unsigned int count);
+	IndexBuffer();
+	IndexBuffer(const uint32* data, uint32 count);
 	~IndexBuffer();
 
 	void Bind() const;
+	void BufferData(const uint32* data, uint32 count);
 	void Unbind() const;
 
 	// Accessor.
-	inline unsigned int GetCount() const { return m_count; }
+	inline uint32 GetCount() const { return m_count; }
 private:
-	unsigned int m_rendererId;
-	unsigned int m_count;
+	uint32 m_rendererId;
+	uint32 m_count;
 };
 

@@ -83,16 +83,13 @@
     <ClInclude Include="src\PrimativeTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\CommonHeaders.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\MemoryManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\CustomMacros.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Vertex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CommonHeaders.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

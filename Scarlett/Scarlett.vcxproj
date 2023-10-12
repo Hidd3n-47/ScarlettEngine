@@ -145,9 +145,8 @@
     <ClCompile Include="VertexBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\CustomMacros.h" />
-    <ClInclude Include="src\MemoryManager.h" />
     <ClInclude Include="src\CommonHeaders.h" />
+    <ClInclude Include="src\CustomMacros.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="EngineState.h" />
     <ClInclude Include="IndexBuffer.h" />

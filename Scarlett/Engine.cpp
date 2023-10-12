@@ -7,16 +7,20 @@
 #include "Shader.h"
 #include "Texture.h"
 
+
 NamespaceScarlettBegin
 
 void Engine::StartEngine()
 {
+
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 	{
 		std::cout << "Failed to init SDL." << std::endl;
 		m_state = EngineState::Failed;
 		return;
 	}
+
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
 	m_window = SDL_CreateWindow("Engine", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, m_width, m_height, SDL_WINDOW_OPENGL);
 	if (!m_window)
@@ -39,8 +43,6 @@ void Engine::StartEngine()
 	glCall(glEnable(GL_BLEND));
 	glCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-
 	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 
 	m_state = EngineState::Running;
@@ -48,89 +50,25 @@ void Engine::StartEngine()
 
 void Engine::Run()
 {
-	/*float vertexData[] =
-	{
-		0.0f, 0.0f, 0.0f, 0.0f,
-		0.0f, 1.0f, 0.0f, 1.0f,
-		1.0f, 1.0f, 1.0f, 1.0f,
-		1.0f, 0.0f, 1.0f, 0.0f
-	};
-
-	unsigned int indexBuffer[] =
-	{
-		0, 1, 2,
-		2, 3, 0
-	};
-
-	VertexArray va;
-	VertexBuffer vb(vertexData, 4 * 4 * sizeof(float));
-
-	VertexBufferLayout layout;
-	layout.Push<float>(2);
-	layout.Push<float>(2);
-	va.AddBuffer(vb, layout);
-
-	IndexBuffer ib(indexBuffer, 6);*/
-	Renderer renderer;
 	Shader shader("res/shaders/shader.vert", "res/shaders/shader.frag");
 	shader.Bind();
+	Renderer renderer;
+	//renderer.Init();
+
+	Texture texture("res/textures/circ.png");
+	texture.Bind();
+	shader.SetUniform1i("u_Texture", 0);
+
+	renderer.AddSprite({ -1.0f, -1.0f }, { 1.0f, 1.0f }, { 0.0f, 0.0f }, { 1.0f, 1.0f }, texture.GetId(), 0.0f, Color(255, 0, 255, 255));
+	renderer.AddSprite({ 0.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 0.0f }, { 1.0f, 1.0f }, texture.GetId(), 0.0f, Color(0, 0, 255, 255));
+	renderer.AddSprite({ -1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 0.0f }, { 1.0f, 1.0f }, texture.GetId(), 0.0f, Color(0, 255, 0, 255));
+	renderer.AddSprite({ -0.8f, -0.8f }, { 1.6f, 1.6f }, { 0.0f, 0.0f }, { 1.0f, 1.0f }, texture.GetId(), 0.0f, Color(255, 255, 0, 255));
+	
 
 	Sprite sprite;
-	sprite.Init(&renderer, &shader, 0, 0, 1, 1);
+	//sprite.Init(&renderer, &shader, 0, 0, 1, 1);
 
-	//float vertexData[8] =
-	//{
-	//	0, 0,
-	//	0, 1,
-	//	1, 1,
-	//	1, 0
-	//};
-	//Vertex verts[4];
-
-	//verts[0].position.x = 0;
-	//verts[0].position.y = 0;
-
-	//verts[1].position.x = 0;
-	//verts[1].position.y = 1;
-
-	//verts[2].position.x = 1;
-	//verts[2].position.y = 1;
-
-	//verts[3].position.x = 1;
-	//verts[3].position.y = 0;
-
-	//uint32 indexBuffer[6] =
-	//{
-	//	0, 1, 2,
-	//	2, 3, 0
-	//};
-
-	//VertexArray va;
-	//VertexBuffer* vb = nullptr;
-	//vb = new VertexBuffer(vertexData, 8 * sizeof(float));
-
-	//VertexBufferLayout layout;
-	//layout.Push<float>(2); // Position
-	////layout.Push<float>(2); // Position
-	////layout.Push<ubyte>(4); // Color
-	//va.AddBuffer(*vb, layout);
-
-	//IndexBuffer* ib = nullptr;
-	//ib = new IndexBuffer(indexBuffer, 6);
-	//va.Unbind();
-	//ib->Unbind();
-	//vb->Unbind();
-
-
-	//shader.SetUniform4f("u_Color", 0.8f, 0.3f, 0.8f, 1.0f);
-
-	/*Texture texture("res/textures/circle.png");
-	texture.Bind();
-	shader.SetUniform1i("u_Texture", 0);*/
-	
-	/*va.Unbind();
-	ib.Unbind();
-	vb.Unbind();*/
+	shader.SetUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
 	shader.Unbind();
 
 
@@ -156,10 +94,12 @@ void Engine::Run()
 		renderer.Clear();
 
 		shader.Bind();
-		//shader.SetUniform4f("u_Color", r, 0.3f, 0.8f, 1.0f);
+		shader.SetUniform4f("u_Color", 1.0f, 1.0f, 1.0f, r);
 
 		//renderer.Draw(va, ib, shader);
-		sprite.Draw();
+		//sprite.Draw();
+		renderer.CreateBatches();
+		renderer.Draw(shader);
 		//renderer.Draw(va, *ib, shader);
 
 		if (r > 1.0f)

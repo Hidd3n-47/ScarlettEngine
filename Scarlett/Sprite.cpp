@@ -25,6 +25,16 @@ void Sprite::Init(Renderer* renderer, Shader* shader, float x, float y, float wi
 		glGenBuffers(1, &m_vboId);
 	}*/
 
+	float vertexData[12] =
+	{
+		x + width, y + height,
+		x, y + height,
+		x, y,
+		x, y,
+		x + width, y,
+		x + width, y + height
+	};
+
 	Vertex verts[4];
 
 	verts[0].position.x = x;
@@ -46,7 +56,7 @@ void Sprite::Init(Renderer* renderer, Shader* shader, float x, float y, float wi
 	};
 
 	//VertexArray va;
-	m_vertexBuffer = new VertexBuffer(verts, sizeof(Vertex));
+	m_vertexBuffer = new VertexBuffer(vertexData, sizeof(float) * 12);
 
 	/*
 		THERE IS A PROBLEM HERE DUE TO THE FACT THAT THE LAYER CANNOT HAVE MULITPLE ATTRIBUTES IN THEM. IE THE COLOR AND THE POSITION CANOT BE LIKE IN A VERTEX STRUCT THAT IS PASSED IN
@@ -55,7 +65,6 @@ void Sprite::Init(Renderer* renderer, Shader* shader, float x, float y, float wi
 	*/
 
 	m_vertexBufferLayout.Push<float>(2); // Position
-	m_vertexBufferLayout.Push<ubyte>(4, true); // Color
 	m_vertexArray.AddBuffer(*m_vertexBuffer, m_vertexBufferLayout);
 
 	m_indexBuffer = new IndexBuffer(indexBuffer, 6);
