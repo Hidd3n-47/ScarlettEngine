@@ -2,8 +2,8 @@
 
 #include "src/CommonHeaders.h"
 
-#include "Renderer.h"
-#include "VertexBufferLayout.h"
+#include "Renderer/Renderer.h"
+#include "Renderer/VertexBufferLayout.h"
 
 NamespaceScarlettBegin
 
